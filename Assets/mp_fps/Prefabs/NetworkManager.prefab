@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5670976052549955970}
   - component: {fileID: 5670976052549955971}
-  - component: {fileID: 5670976052549955968}
   - component: {fileID: 5670976052549955969}
+  - component: {fileID: -755922156921076429}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -50,17 +50,31 @@ MonoBehaviour:
   runInBackground: 1
   autoStartServerBuild: 1
   serverTickRate: 30
-  offlineScene: 
-  onlineScene: 
-  transport: {fileID: 5670976052549955968}
+  offlineScene: Assets/mp_fps/Scenes/MP_Test.unity
+  onlineScene: Assets/mp_fps/Scenes/MP_Test.unity
+  transport: {fileID: -755922156921076429}
   networkAddress: localhost
   maxConnections: 100
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 7425923554654752928, guid: 952467a855f8c4176abee1b6fd3d3340, type: 3}
+  playerPrefab: {fileID: 986294827038626768, guid: 77fc46e3a6c304b1890d316bf0044f06, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs: []
---- !u!114 &5670976052549955968
+--- !u!114 &5670976052549955969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5670976052549955974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetX: 0
+  offsetY: 0
+--- !u!114 &-755922156921076429
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,20 +100,6 @@ MonoBehaviour:
   MaximizeSendReceiveBuffersToOSLimit: 1
   ReliableMaxMessageSize: 298449
   UnreliableMaxMessageSize: 1199
-  debugLog: 0
+  debugLog: 1
   statisticsGUI: 0
   statisticsLog: 0
---- !u!114 &5670976052549955969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5670976052549955974}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offsetX: 0
-  offsetY: 0
