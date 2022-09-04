@@ -5,7 +5,7 @@ using Mirror;
 
 public class NetworkComponentHandler : NetworkBehaviour
 {
-    public List<Component> localBehaviours;
+    public Behaviour[] localBehaviours;
     // Start is called before the first frame update
     void Start()
     {
