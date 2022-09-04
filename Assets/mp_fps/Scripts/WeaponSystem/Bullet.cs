@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Bullet : MonoBehaviour
+public class Bullet : NetworkBehaviour
 {
 
     public float maxHitDamage;
@@ -23,6 +24,8 @@ public class Bullet : MonoBehaviour
 
     public LayerMask hitMask;
 
+    Vector3 dir;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,7 +40,9 @@ public class Bullet : MonoBehaviour
     void UpdatePosition() {
         velocity = new Vector3(0, GRAVITY * gravityCoefficient, muzzleVelocity * velocityFalloffCurve.Evaluate(timeSinceInstantiation));
         Vector3 forward = transform.forward;
-        rb.velocity = new Vector3(forward.x * velocity.x, forward.y*velocity.y, forward.z * velocity.z);
+        var localVel = transform.InverseTransformDirection(rb.velocity);
+        localVel = velocity;
+        rb.velocity = transform.TransformDirection(localVel);
     }
 
     void CheckCollisions() {
@@ -66,7 +71,10 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         UpdatePosition();
-        CheckCollisions();
+
+        if (isServer)
+            CheckCollisions();
+
         previousPosition = transform.position;
         timeSinceInstantiation += Time.deltaTime;
     }

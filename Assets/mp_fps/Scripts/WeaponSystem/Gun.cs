@@ -13,14 +13,14 @@ public class Gun : NetworkBehaviour
     void Update()
     {
         if (Input.GetMouseButtonUp(0)) {
-            CMD_Fire(muzzle.position, muzzle.forward);
+            CMD_Fire(muzzle.position, muzzle.rotation);
         }
     }
 
 
     [Command]
-    public void CMD_Fire(Vector3 muzzlePosition, Vector3 direction) {
-        GameObject bullet = Instantiate(bulletPrefab, muzzlePosition, Quaternion.Euler(direction));
-        // NetworkServer.Spawn(bullet);
+    public void CMD_Fire(Vector3 muzzlePosition, Quaternion rotation) {
+        GameObject bullet = Instantiate(bulletPrefab, muzzlePosition, rotation);
+        NetworkServer.Spawn(bullet);
     }
 }
