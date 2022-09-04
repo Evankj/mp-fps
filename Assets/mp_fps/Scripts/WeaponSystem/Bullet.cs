@@ -51,14 +51,17 @@ public class Bullet : NetworkBehaviour
         RaycastHit[] hits = Physics.RaycastAll(previousPosition, dir, dist, hitMask);
         if (hits.Length > 0) {
             DamageHandler damageHandler = GetDamageHandler(hits[0].transform.gameObject);
-            damageHandler.CMD_DealDamage(
-                maxHitDamage * damageFalloffCurve.Evaluate(timeSinceInstantiation)
-            );
+            if (damageHandler) {
+                damageHandler.CMD_DealDamage(
+                    maxHitDamage * damageFalloffCurve.Evaluate(timeSinceInstantiation)
+                );
+            }
+            NetworkServer.Destroy(this.gameObject);
         }
     }
 
     DamageHandler GetDamageHandler(GameObject hitObject) {
-        DamageHandler damageHandler = null;
+        DamageHandler damageHandler = hitObject.GetComponent<DamageHandler>();
         Transform parentObject = null;
         while(parentObject != null) {
             parentObject = transform.parent;
@@ -66,6 +69,8 @@ public class Bullet : NetworkBehaviour
         }
         return damageHandler;
     }
+
+
 
     // Update is called once per frame
     void Update()
