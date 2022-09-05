@@ -11,11 +11,20 @@ public class BoltPullingState : IBoltState
         {
             return gun.boltHeldOpenState;
         }
+        if (gun.input.reloadUp)
+        {
+            return gun.boltCyclingForwardState;
+        }
         return this;
     }
     public void OnEnter(Gun gun, IBoltState previousState)
     {
         gun.boltStateTimer = gun.boltPullDuration;
+
+        gun.boltStartMarkerTransform = gun.boltForwardMarkerTransform;
+        gun.boltEndMarkerTransform = gun.boltBackMarkerTransform;
+        gun.boltAnimationDuration = gun.boltPullDuration;
+        gun.gunAnimator.UpdateBoltState(this);
     }
     public void OnExit(Gun gun, IBoltState nextState) { }
 }

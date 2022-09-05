@@ -19,7 +19,8 @@ public class InputHandler : MonoBehaviour
     }
 }
 
-public class InputClass {
+public class InputClass
+{
     public Vector2 moveVector;
     public Vector2 lookVector;
     public bool reloadDown;
@@ -41,8 +42,13 @@ public class InputClass {
     public bool boltReleaseDoubleTapped;
 
 
-    public void UpdateInput() {
+    public void UpdateInput()
+    {
         moveVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         lookVector = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+        reloadHeld = Input.GetKey(KeyCode.R);
+        reloadUp = Input.GetKeyUp(KeyCode.R);
+        modifierHeld = Input.GetKey(KeyCode.Tab);
+        boltReleaseTapped = Input.GetKeyUp(KeyCode.Q);
     }
 }

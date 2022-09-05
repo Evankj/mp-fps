@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1852978348, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+      propertyPath: m_AssetId
+      value: 77fc46e3a6c304b1890d316bf0044f06
+      objectReference: {fileID: 0}
     - target: {fileID: 702600688739610360, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       propertyPath: m_AssetId
       value: 77fc46e3a6c304b1890d316bf0044f06
@@ -59,5 +63,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: FirstPersonController Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8421446943135104557, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 986294826246895939}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+--- !u!4 &986294826246895939 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4459864851310106429, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+  m_PrefabInstance: {fileID: 3482578392893009534}
+  m_PrefabAsset: {fileID: 0}

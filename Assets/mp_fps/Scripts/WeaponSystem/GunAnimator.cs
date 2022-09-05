@@ -41,7 +41,7 @@ public class GunAnimator : NetworkBehaviour
 
     void AnimateBolt()
     {
-        currentGun.boltTransform.position = Vector3.Lerp(currentGun.boltStartMarkerTransform.position, currentGun.boltEndMarkerTransform.position, currentGun.boltAnimationDuration / Time.deltaTime);
+        currentGun.boltTransform.position = Vector3.Lerp(currentGun.boltStartMarkerTransform.position, currentGun.boltEndMarkerTransform.position, (currentGun.boltAnimationDuration - currentGun.boltStateTimer) / currentGun.boltAnimationDuration);
     }
 
     void AnimateMagazine()

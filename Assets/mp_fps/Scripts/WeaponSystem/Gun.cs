@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
+//using Mirror;
 
-public class Gun : NetworkBehaviour
+public class Gun : MonoBehaviour
 {
+
+    public GunNetworkingInterface gunNetworkingInterface;
     IBoltState currentBoltState;
     IBoltState previousBoltState;
     IMagazineState currentMagazineState;
@@ -57,12 +59,13 @@ public class Gun : NetworkBehaviour
     public MagazineCheckingState magazineCheckingState;
 
 
-    public Dictionary<string, IBoltState> boltStateDict;
-    public Dictionary<string, IMagazineState> magazineStateDict;
+    public Dictionary<string, IBoltState> boltStateDict = new Dictionary<string, IBoltState>();
+    public Dictionary<string, IMagazineState> magazineStateDict = new Dictionary<string, IMagazineState>();
 
 
     public float boltStateTimer;
     public float boltCycleBackDuration = 1;
+    public float boltMoveToCheckPosDuration = 1;
     public float boltCycleForwardDuration = 1;
     public float boltPullDuration = 1;
 
@@ -80,6 +83,7 @@ public class Gun : NetworkBehaviour
     public Transform muzzle;
     public GameObject bulletPrefab;
 
+    public InputHandler inputHandler;
     public InputClass input;
 
     public Animation gunIKAnimator;
@@ -103,15 +107,19 @@ public class Gun : NetworkBehaviour
         boltCyclingBackState = new BoltCyclingBackState();
         boltCyclingForwardState = new BoltCyclingForwardState();
 
+
+
         boltStateDict.Add(boltPullingState.GetType().Name, boltPullingState);
         boltStateDict.Add(boltCheckingState.GetType().Name, boltCheckingState);
         boltStateDict.Add(boltHeldOpenState.GetType().Name, boltHeldOpenState);
+        boltStateDict.Add(boltClosedState.GetType().Name, boltClosedState);
         boltStateDict.Add(boltLockedOpenState.GetType().Name, boltLockedOpenState);
         boltStateDict.Add(boltJammedState.GetType().Name, boltJammedState);
         boltStateDict.Add(boltMovingToPullState.GetType().Name, boltMovingToPullState);
         boltStateDict.Add(boltMovingToReleaseState.GetType().Name, boltMovingToReleaseState);
         boltStateDict.Add(boltCyclingBackState.GetType().Name, boltCyclingBackState);
         boltStateDict.Add(boltCyclingForwardState.GetType().Name, boltCyclingForwardState);
+
 
         magazineInState = new MagazineInState();
         magazineOutState = new MagazineOutState();
@@ -133,32 +141,41 @@ public class Gun : NetworkBehaviour
         magazineStateDict.Add(magazineRemovingToStoreState.GetType().Name, magazineRemovingToStoreState);
         magazineStateDict.Add(magazineCheckingState.GetType().Name, magazineCheckingState);
 
+        Debug.Log("FSM SETUP!");
+        currentBoltState = boltClosedState;
+        previousBoltState = boltClosedState;
+        currentMagazineState = magazineInState;
+        previousMagazineState = magazineInState;
     }
 
     // Update is called once per frame
     void Update()
     {
+        input = inputHandler.input;
         // Owner of this gun component needs to update state, observers (replicated) only need to know what state is
-        if (hasAuthority)
+        if (gunNetworkingInterface.hasAuthority)
             HandleStates();
 
         if (Input.GetMouseButtonUp(0))
         {
-            CMD_Fire(muzzle.position, muzzle.rotation);
+            gunNetworkingInterface.CMD_Fire(muzzle.position, muzzle.rotation);
         }
+
+        Debug.Log(currentBoltState);
     }
 
     void HandleStates()
     {
+
         currentBoltState = currentBoltState.DoState(this);
-        if (previousBoltState != currentBoltState)
+        if (previousBoltState.GetType() != currentBoltState.GetType())
         {
             BoltStateChanged(currentBoltState, previousBoltState);
         }
         previousBoltState = currentBoltState;
 
         currentMagazineState = currentMagazineState.DoState(this);
-        if (previousMagazineState != currentMagazineState)
+        if (previousMagazineState.GetType() != currentMagazineState.GetType())
         {
             MagazineStateChanged(currentMagazineState, previousMagazineState);
         }
@@ -198,10 +215,4 @@ public class Gun : NetworkBehaviour
 
 
 
-    [Command]
-    public void CMD_Fire(Vector3 muzzlePosition, Quaternion rotation)
-    {
-        GameObject bullet = Instantiate(bulletPrefab, muzzlePosition, rotation);
-        NetworkServer.Spawn(bullet);
-    }
 }
