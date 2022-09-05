@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/mp_fps/Scenes/MP_Test.unity
+    guid: af0ffe42db7534d21a326fa0d8dacd0a
   m_configObjects: {}
