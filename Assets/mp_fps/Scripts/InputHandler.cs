@@ -22,6 +22,24 @@ public class InputHandler : MonoBehaviour
 public class InputClass {
     public Vector2 moveVector;
     public Vector2 lookVector;
+    public bool reloadDown;
+    public bool reloadUp;
+    public bool reloadHeld;
+    public bool reloadTapped;
+    public bool reloadDoubleTapped;
+
+    public bool modifierDown;
+    public bool modifierUp;
+    public bool modifierHeld;
+    public bool modifierTapped;
+    public bool modifierDoubleTapped;
+
+    public bool boltReleaseDown;
+    public bool boltReleaseUp;
+    public bool boltReleaseHeld;
+    public bool boltReleaseTapped;
+    public bool boltReleaseDoubleTapped;
+
 
     public void UpdateInput() {
         moveVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));

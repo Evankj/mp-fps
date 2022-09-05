@@ -11,6 +11,7 @@ public class Bullet : NetworkBehaviour
     public AnimationCurve velocityFalloffCurve;
     float timeSinceInstantiation;
 
+
     public float muzzleVelocity;
     public float gravityCoefficient = 1;
 
@@ -33,11 +34,13 @@ public class Bullet : NetworkBehaviour
         previousPosition = transform.position;
     }
 
-    void Setup() {
+    void Setup()
+    {
         rb.useGravity = false;
     }
 
-    void UpdatePosition() {
+    void UpdatePosition()
+    {
         velocity = new Vector3(0, GRAVITY * gravityCoefficient, muzzleVelocity * velocityFalloffCurve.Evaluate(timeSinceInstantiation));
         Vector3 forward = transform.forward;
         var localVel = transform.InverseTransformDirection(rb.velocity);
@@ -45,13 +48,16 @@ public class Bullet : NetworkBehaviour
         rb.velocity = transform.TransformDirection(localVel);
     }
 
-    void CheckCollisions() {
+    void CheckCollisions()
+    {
         Vector3 dir = transform.position - previousPosition;
         float dist = Vector3.Distance(previousPosition, transform.position);
         RaycastHit[] hits = Physics.RaycastAll(previousPosition, dir, dist, hitMask);
-        if (hits.Length > 0) {
+        if (hits.Length > 0)
+        {
             DamageHandler damageHandler = GetDamageHandler(hits[0].transform.gameObject);
-            if (damageHandler) {
+            if (damageHandler)
+            {
                 damageHandler.CMD_DealDamage(
                     maxHitDamage * damageFalloffCurve.Evaluate(timeSinceInstantiation)
                 );
@@ -60,10 +66,12 @@ public class Bullet : NetworkBehaviour
         }
     }
 
-    DamageHandler GetDamageHandler(GameObject hitObject) {
+    DamageHandler GetDamageHandler(GameObject hitObject)
+    {
         DamageHandler damageHandler = hitObject.GetComponent<DamageHandler>();
         Transform parentObject = null;
-        while(parentObject != null) {
+        while (parentObject != null)
+        {
             parentObject = transform.parent;
             damageHandler = parentObject.GetComponent<DamageHandler>();
         }
