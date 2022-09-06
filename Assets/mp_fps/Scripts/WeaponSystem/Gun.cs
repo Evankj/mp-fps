@@ -80,6 +80,20 @@ public class Gun : MonoBehaviour
 
     public GunAnimator gunAnimator;
 
+    public AnimationClip magazineRemoveToStoreIKAnim;
+    public AnimationClip magazineRemoveToDropIKAnim;
+    public AnimationClip magazineRemoveToCheckIKAnim;
+    public AnimationClip magazineInsertIKAnim;
+
+
+    public float leftHandIKFadeInDuration;
+    public float leftHandIKFadeInTimer;
+    public float rightHandIKFadeInDuration;
+    public float rightHandIKFadeInTimer;
+
+    public Transform defaultLeftHandIKTarget;
+    public Transform defaultRightHandIKTarget;
+
     public Transform muzzle;
     public GameObject bulletPrefab;
 
@@ -164,6 +178,14 @@ public class Gun : MonoBehaviour
         }
     }
 
+
+    void HandleIK()
+    {
+        leftHandIKFadeInTimer -= Time.deltaTime;
+        rightHandIKFadeInTimer -= Time.deltaTime;
+
+    }
+
     void HandleStates()
     {
         currentBoltState = currentBoltState.DoState(this);
@@ -204,7 +226,7 @@ public class Gun : MonoBehaviour
     {
         // Debug.Log(gunAnimator.netId + " Changed from " + previousState + " to " + newState);
         previousBoltState.OnExit(this, newState);
-        newState.OnEnter(this, previousState);
+        currentBoltState.OnEnter(this, previousState);
         // gunAnimator.UpdateBoltState(newState);
         if (gunAnimator.hasAuthority)
             gunAnimator.CMD_SetBoltState(newState.GetType().Name);

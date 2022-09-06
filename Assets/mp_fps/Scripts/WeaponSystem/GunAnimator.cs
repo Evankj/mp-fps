@@ -62,7 +62,15 @@ public class GunAnimator : NetworkBehaviour
 
     void AnimateMagazine()
     {
-        currentGun.magazineTransform.position = Vector3.Lerp(currentGun.magazineStartMarkerTransform.position, currentGun.magazineEndMarkerTransform.position, currentGun.magazineAnimationDuration / Time.deltaTime);
+        if (currentGun.magazineAnimationDuration != 0)
+        {
+            Vector3 pos = Vector3.Lerp(currentGun.magazineStartMarkerTransform.localPosition, currentGun.magazineEndMarkerTransform.localPosition, (currentGun.magazineAnimationDuration - currentGun.magazineStateTimer) / currentGun.magazineAnimationDuration);
+            currentGun.magazineTransform.localPosition = pos;
+        }
+        else
+        {
+            currentGun.magazineTransform.localPosition = currentGun.magazineEndMarkerTransform.localPosition;
+        }
     }
 
 
