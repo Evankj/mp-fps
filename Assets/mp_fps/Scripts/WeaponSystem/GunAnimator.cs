@@ -7,11 +7,11 @@ public class GunAnimator : NetworkBehaviour
 {
 
     [SyncVar]
-    string boltStateKey;
+    public string boltStateKey;
     IBoltState boltState;
 
     [SyncVar]
-    string magazineStateKey;
+    public string magazineStateKey = "TEST";
     IMagazineState magazineState;
 
     public Gun currentGun;
@@ -26,22 +26,38 @@ public class GunAnimator : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Debug.Log(netId + " " + boltState);
         AnimateBolt();
-        AnimateMagazine();
+        if (!isLocalPlayer)
+        {
+            currentGun.currentBoltState = currentGun.boltStateDict[boltStateKey];
+            currentGun.currentMagazineState = currentGun.magazineStateDict[magazineStateKey];
+        }
+        // AnimateMagazine();
     }
 
     public void UpdateBoltState(IBoltState newState)
     {
-        SetBoltState(newState);
+        CMD_SetBoltState(newState.GetType().Name);
+        // SetBoltState(newState);
     }
     public void UpdateMagazineState(IMagazineState newState)
     {
-        SetMagazineState(newState);
+        CMD_SetMagazineState(newState.GetType().Name);
+        // SetMagazineState(newState);
     }
 
     void AnimateBolt()
     {
-        currentGun.boltTransform.position = Vector3.Lerp(currentGun.boltStartMarkerTransform.position, currentGun.boltEndMarkerTransform.position, (currentGun.boltAnimationDuration - currentGun.boltStateTimer) / currentGun.boltAnimationDuration);
+        if (currentGun.boltAnimationDuration != 0)
+        {
+            Vector3 pos = Vector3.Lerp(currentGun.boltStartMarkerTransform.localPosition, currentGun.boltEndMarkerTransform.localPosition, (currentGun.boltAnimationDuration - currentGun.boltStateTimer) / currentGun.boltAnimationDuration);
+            currentGun.boltTransform.localPosition = pos;
+        }
+        else
+        {
+            currentGun.boltTransform.localPosition = currentGun.boltEndMarkerTransform.localPosition;
+        }
     }
 
     void AnimateMagazine()
@@ -49,16 +65,14 @@ public class GunAnimator : NetworkBehaviour
         currentGun.magazineTransform.position = Vector3.Lerp(currentGun.magazineStartMarkerTransform.position, currentGun.magazineEndMarkerTransform.position, currentGun.magazineAnimationDuration / Time.deltaTime);
     }
 
-    void SetBoltState(IBoltState boltState)
-    {
-        this.boltState = boltState;
-        CMD_SetBoltState(boltState.GetType().Name);
-    }
 
     [Command]
     public void CMD_SetBoltState(string boltState)
     {
-        this.boltState = currentGun.boltStateDict[boltState];
+        // IBoltState state = currentGun.boltStateDict[boltState];
+        boltStateKey = boltState;
+        // boltState = boltStateKey;
+        // this.boltState = state;
     }
 
     void SetMagazineState(IMagazineState magazineState)
@@ -70,6 +84,8 @@ public class GunAnimator : NetworkBehaviour
     [Command]
     public void CMD_SetMagazineState(string magazineState)
     {
-        this.magazineState = currentGun.magazineStateDict[magazineState];
+        // IMagazineState state = currentGun.magazineStateDict[magazineState];
+        // this.magazineState = state;
+        magazineStateKey = magazineState;
     }
 }

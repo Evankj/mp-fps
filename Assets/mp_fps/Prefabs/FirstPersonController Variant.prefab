@@ -7,10 +7,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1852978348, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
-      propertyPath: m_AssetId
-      value: 77fc46e3a6c304b1890d316bf0044f06
-      objectReference: {fileID: 0}
     - target: {fileID: 702600688739610360, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       propertyPath: m_AssetId
       value: 77fc46e3a6c304b1890d316bf0044f06
@@ -63,14 +59,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: FirstPersonController Variant
       objectReference: {fileID: 0}
-    - target: {fileID: 8421446943135104557, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
-      propertyPath: target
+    - target: {fileID: 5096147071987434896, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+      propertyPath: localBehaviours.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5096147071987434896, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+      propertyPath: localBehaviours.Array.data[2]
       value: 
-      objectReference: {fileID: 986294826246895939}
+      objectReference: {fileID: 4527697572801748389}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
---- !u!4 &986294826246895939 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4459864851310106429, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+--- !u!114 &4527697572801748389 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1045123653477970907, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
   m_PrefabInstance: {fileID: 3482578392893009534}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07209942b91534a9c97f967b13f2851f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

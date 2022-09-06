@@ -41,7 +41,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1852978346}
-  - component: {fileID: 1852978348}
   - component: {fileID: 1852978347}
   m_Layer: 0
   m_Name: GunTest
@@ -66,23 +65,6 @@ Transform:
   m_Father: {fileID: 1314705451}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1852978348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1852978345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  serverOnly: 0
-  visible: 0
-  m_AssetId: 77fc46e3a6c304b1890d316bf0044f06
-  hasSpawned: 0
 --- !u!114 &1852978347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,11 +86,11 @@ MonoBehaviour:
   boltJammedMarkerTransform: {fileID: 0}
   boltStartMarkerTransform: {fileID: 9013038846898874229}
   boltEndMarkerTransform: {fileID: 9013038846898874229}
-  boltAnimationDuration: 0
+  boltAnimationDuration: 1
   magazineTransform: {fileID: 0}
   magazineStartMarkerTransform: {fileID: 0}
   magazineEndMarkerTransform: {fileID: 0}
-  magazineAnimationDuration: 0
+  magazineAnimationDuration: 1
   boltStateTimer: 0
   boltCycleBackDuration: 0.01
   boltMoveToCheckPosDuration: 0.1
@@ -428,7 +410,7 @@ MonoBehaviour:
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
-  target: {fileID: 4459864851508666808}
+  target: {fileID: 4459864851310106429}
 --- !u!114 &-5890333726464368533
 MonoBehaviour:
   m_ObjectHideFlags: 0

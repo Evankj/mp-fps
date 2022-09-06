@@ -7,10 +7,10 @@ public class Gun : MonoBehaviour
 {
 
     public GunNetworkingInterface gunNetworkingInterface;
-    IBoltState currentBoltState;
-    IBoltState previousBoltState;
-    IMagazineState currentMagazineState;
-    IMagazineState previousMagazineState;
+    public IBoltState currentBoltState;
+    public IBoltState previousBoltState;
+    public IMagazineState currentMagazineState;
+    public IMagazineState previousMagazineState;
 
     public Magazine currentMagazine;
     public Bullet currentBullet;
@@ -141,7 +141,6 @@ public class Gun : MonoBehaviour
         magazineStateDict.Add(magazineRemovingToStoreState.GetType().Name, magazineRemovingToStoreState);
         magazineStateDict.Add(magazineCheckingState.GetType().Name, magazineCheckingState);
 
-        Debug.Log("FSM SETUP!");
         currentBoltState = boltClosedState;
         previousBoltState = boltClosedState;
         currentMagazineState = magazineInState;
@@ -151,26 +150,32 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        input = inputHandler.input;
         // Owner of this gun component needs to update state, observers (replicated) only need to know what state is
         if (gunNetworkingInterface.hasAuthority)
+        {
+            input = inputHandler.input;
             HandleStates();
+        }
+        HandleStateChanged();
 
         if (Input.GetMouseButtonUp(0))
         {
             gunNetworkingInterface.CMD_Fire(muzzle.position, muzzle.rotation);
         }
-
-        Debug.Log(currentBoltState);
     }
 
     void HandleStates()
     {
-
         currentBoltState = currentBoltState.DoState(this);
+    }
+
+    void HandleStateChanged()
+    {
         if (previousBoltState.GetType() != currentBoltState.GetType())
         {
+            // Debug.Log(gunAnimator.netId + "Bolt state changed!");
             BoltStateChanged(currentBoltState, previousBoltState);
+            // boltStateTimer = boltAnimationDuration;
         }
         previousBoltState = currentBoltState;
 
@@ -178,6 +183,7 @@ public class Gun : MonoBehaviour
         if (previousMagazineState.GetType() != currentMagazineState.GetType())
         {
             MagazineStateChanged(currentMagazineState, previousMagazineState);
+            // gunAnimator.CMD_SetMagazineState(currentMagazineState.GetType().Name);
         }
         previousMagazineState = currentMagazineState;
 
@@ -196,16 +202,20 @@ public class Gun : MonoBehaviour
 
     void BoltStateChanged(IBoltState newState, IBoltState previousState)
     {
+        // Debug.Log(gunAnimator.netId + " Changed from " + previousState + " to " + newState);
         previousBoltState.OnExit(this, newState);
-        currentBoltState.OnEnter(this, previousState);
-        gunAnimator.UpdateBoltState(newState);
+        newState.OnEnter(this, previousState);
+        // gunAnimator.UpdateBoltState(newState);
+        if (gunAnimator.hasAuthority)
+            gunAnimator.CMD_SetBoltState(newState.GetType().Name);
     }
 
     void MagazineStateChanged(IMagazineState newState, IMagazineState previousState)
     {
         previousMagazineState.OnExit(this, newState);
         currentMagazineState.OnEnter(this, previousState);
-        gunAnimator.UpdateMagazineState(newState);
+        if (gunAnimator.hasAuthority)
+            gunAnimator.CMD_SetMagazineState(newState.GetType().Name);
     }
 
     public void ChamberBullet(Bullet bullet)

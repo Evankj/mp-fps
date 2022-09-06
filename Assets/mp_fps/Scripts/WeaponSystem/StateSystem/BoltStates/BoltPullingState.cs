@@ -24,7 +24,6 @@ public class BoltPullingState : IBoltState
         gun.boltStartMarkerTransform = gun.boltForwardMarkerTransform;
         gun.boltEndMarkerTransform = gun.boltBackMarkerTransform;
         gun.boltAnimationDuration = gun.boltPullDuration;
-        gun.gunAnimator.UpdateBoltState(this);
     }
     public void OnExit(Gun gun, IBoltState nextState) { }
 }
