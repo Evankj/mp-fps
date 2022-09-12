@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class BoltLockedOpenState : IBoltState
 {
+
+    bool boltJustLocked = false;
+
     public IBoltState DoState(Gun gun)
     {
         if (gun.input.boltReleaseTapped)
         {
             return gun.boltCyclingForwardState;
         }
-        if (gun.input.reloadHeld)
+        if (!gun.inputHandler.previousInput.reloadHeld && gun.input.reloadHeld)
         {
             return gun.boltPullingState;
         }
@@ -21,6 +24,7 @@ public class BoltLockedOpenState : IBoltState
         gun.boltStartMarkerTransform = gun.boltBackMarkerTransform;
         gun.boltEndMarkerTransform = gun.boltBackMarkerTransform;
         gun.boltAnimationDuration = 0;
+        // boltJustLocked = true;
         // Play sound for locking bolt open!
     }
     public void OnExit(Gun gun, IBoltState nextState)

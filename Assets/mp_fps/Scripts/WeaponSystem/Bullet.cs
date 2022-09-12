@@ -12,7 +12,7 @@ public class Bullet : NetworkBehaviour
     float timeSinceInstantiation;
 
 
-    public float muzzleVelocity;
+    public float muzzleVelocity = 400;
     public float gravityCoefficient = 1;
 
     public static float GRAVITY = -9.8f;
@@ -26,6 +26,8 @@ public class Bullet : NetworkBehaviour
     public LayerMask hitMask;
 
     Vector3 dir;
+
+    public float suppressionAmount = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -58,10 +60,28 @@ public class Bullet : NetworkBehaviour
             DamageHandler damageHandler = GetDamageHandler(hits[0].transform.gameObject);
             if (damageHandler)
             {
-                damageHandler.CMD_DealDamage(
-                    maxHitDamage * damageFalloffCurve.Evaluate(timeSinceInstantiation)
-                );
+                float damage = maxHitDamage * damageFalloffCurve.Evaluate(timeSinceInstantiation);
+                switch (hits[0].collider.tag)
+                {
+                    case "ARM":
+                        damage *= damageHandler.armShotDamageCoefficient;
+                        break;
+                    case "LEG":
+                        damage *= damageHandler.legShotDamageCoefficient;
+                        break;
+                    case "TORSO":
+                        damage *= damageHandler.torsoShotDamageCoefficient;
+                        break;
+                    case "HEAD":
+                        damage *= damageHandler.headShotDamageCoefficient;
+                        break;
+                    default:
+                        break;
+                }
+                damageHandler.CMD_DealDamage(damage);
             }
+
+
             NetworkServer.Destroy(this.gameObject);
         }
     }
@@ -90,5 +110,9 @@ public class Bullet : NetworkBehaviour
 
         previousPosition = transform.position;
         timeSinceInstantiation += Time.deltaTime;
+    }
+
+    void OnGUI()
+    {
     }
 }

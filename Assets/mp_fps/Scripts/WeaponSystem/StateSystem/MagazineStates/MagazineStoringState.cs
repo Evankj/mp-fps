@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class MagazineStoringState : IMagazineState
 {
-    public IMagazineState DoState(Gun gun) {
-        if (gun.magazineStateTimer <= 0) {
+    public IMagazineState DoState(Gun gun)
+    {
+        if (gun.magazineStateTimer <= 0)
+        {
             // Animation over, go to mag out state
             return gun.magazineOutState;
         }
         return this;
     }
-    public void OnEnter(Gun gun, IMagazineState previousState) {
+    public void OnEnter(Gun gun, IMagazineState previousState)
+    {
         gun.magazineStateTimer = gun.magazineStoringDuration;
+        gun.magazineStartMarkerTransform = gun.magazineOutPosition;
+        gun.magazineEndMarkerTransform = gun.magazineStorePosition;
     }
-    public void OnExit(Gun gun, IMagazineState nextState) {
+    public void OnExit(Gun gun, IMagazineState nextState)
+    {
         // We've finished storing the mag, tell inventory we need to store a mag
     }
 }

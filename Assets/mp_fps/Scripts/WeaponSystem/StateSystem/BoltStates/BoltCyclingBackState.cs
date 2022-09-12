@@ -11,7 +11,8 @@ public class BoltCyclingBackState : IBoltState
             // Maybe check if we want to jam here?
 
             // Check if gun.currentMagazine has ammo and there's a magazine loaded, if so cycle forward, if not lock open
-            if (gun.currentMagazine.bullets.Count > 0 && gun.currentMagazine != null)
+            //if (gun.currentMagazine.bullets.Count > 0 && gun.currentMagazine != null)
+            if (gun.currentBullets > 0)
             {
                 // We have ammo, cycle forward
                 return gun.boltCyclingForwardState;
@@ -34,5 +35,6 @@ public class BoltCyclingBackState : IBoltState
     }
     public void OnExit(Gun gun, IBoltState nextState)
     {
+        gun.EjectRound();
     }
 }

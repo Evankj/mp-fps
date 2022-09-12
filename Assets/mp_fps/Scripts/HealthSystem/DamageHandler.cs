@@ -18,8 +18,9 @@ public class DamageHandler : NetworkBehaviour
     [SyncVar]
     public float health = 100;
 
-    [Command]
-    public void CMD_DealDamage(float damageAmount) {
+    [Command(requiresAuthority = false)]
+    public void CMD_DealDamage(float damageAmount)
+    {
         health -= damageAmount;
     }
 }

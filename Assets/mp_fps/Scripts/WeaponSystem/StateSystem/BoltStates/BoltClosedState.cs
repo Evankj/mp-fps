@@ -11,6 +11,10 @@ public class BoltClosedState : IBoltState
             // We want to pull the slide
             return gun.boltMovingToPullState;
         }
+        if (gun.firing)
+        {
+            return gun.boltCyclingBackState;
+        }
 
         return this;
     }
@@ -22,6 +26,8 @@ public class BoltClosedState : IBoltState
         gun.boltStartMarkerTransform = gun.boltForwardMarkerTransform;
         gun.boltEndMarkerTransform = gun.boltForwardMarkerTransform;
         gun.boltAnimationDuration = 0;
+
+        gun.ChamberRound();
     }
     public void OnExit(Gun gun, IBoltState nextState) { }
 }

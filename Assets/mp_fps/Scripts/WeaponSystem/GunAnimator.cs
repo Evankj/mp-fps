@@ -15,19 +15,31 @@ public class GunAnimator : NetworkBehaviour
     IMagazineState magazineState;
 
     public Gun currentGun;
+    bool initialisedKeys = false;
+
+    AimHandler aimHandler;
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        aimHandler = GetComponent<AimHandler>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!initialisedKeys)
+        {
+            boltStateKey = currentGun.currentBoltState.GetType().Name;
+            magazineStateKey = currentGun.currentMagazineState.GetType().Name;
+            Debug.Log(magazineStateKey);
+            initialisedKeys = true;
+        }
         // Debug.Log(netId + " " + boltState);
         AnimateBolt();
+        AnimateMagazine();
+        AnimateWeaponTransform();
         if (!isLocalPlayer)
         {
             currentGun.currentBoltState = currentGun.boltStateDict[boltStateKey];
@@ -62,14 +74,53 @@ public class GunAnimator : NetworkBehaviour
 
     void AnimateMagazine()
     {
-        if (currentGun.magazineAnimationDuration != 0)
+        if (!currentGun.gunIKAnimator.isPlaying)
         {
-            Vector3 pos = Vector3.Lerp(currentGun.magazineStartMarkerTransform.localPosition, currentGun.magazineEndMarkerTransform.localPosition, (currentGun.magazineAnimationDuration - currentGun.magazineStateTimer) / currentGun.magazineAnimationDuration);
-            currentGun.magazineTransform.localPosition = pos;
+            if (currentGun.magazineAnimationDuration != 0)
+            {
+                Vector3 pos = Vector3.Lerp(currentGun.magazineStartMarkerTransform.localPosition, currentGun.magazineEndMarkerTransform.localPosition, (currentGun.magazineAnimationDuration - currentGun.magazineStateTimer) / currentGun.magazineAnimationDuration);
+                currentGun.magazineTransform.localPosition = pos;
+            }
+            else
+            {
+                currentGun.magazineTransform.localPosition = currentGun.magazineEndMarkerTransform.localPosition;
+            }
         }
         else
         {
-            currentGun.magazineTransform.localPosition = currentGun.magazineEndMarkerTransform.localPosition;
+            Debug.Log("Playing");
+        }
+    }
+
+    void AnimateWeaponTransform()
+    {
+        if (aimHandler.isAiming)
+        {
+            currentGun.weaponStartMarkerTransform = currentGun.transform;
+            currentGun.weaponEndMarkerTransform = currentGun.weaponAimTransform;
+            currentGun.weaponAnimationTimer = currentGun.weaponADSDuration;
+        }
+        else
+        {
+            // if (currentGun.boltStateTimer != 0 || currentGun.magazineStateTimer != 0)
+            // {
+            currentGun.weaponEndMarkerTransform = currentGun.weaponDefaultTransform;
+            currentGun.weaponAnimationTimer = currentGun.weaponReturnToDefaultDuration;
+            // }
+        }
+
+        if (currentGun.weaponAnimationDuration != 0)
+        {
+
+            Vector3 pos = Vector3.Lerp(currentGun.weaponStartMarkerTransform.localPosition, currentGun.weaponEndMarkerTransform.localPosition, (currentGun.weaponAnimationDuration - currentGun.weaponAnimationTimer) / currentGun.weaponAnimationDuration);
+            Quaternion rot = Quaternion.Lerp(currentGun.weaponStartMarkerTransform.localRotation, currentGun.weaponEndMarkerTransform.localRotation, (currentGun.weaponAnimationDuration - currentGun.weaponAnimationTimer) / currentGun.weaponAnimationDuration);
+            currentGun.weaponTransform.localPosition = pos;
+            currentGun.weaponTransform.localRotation = rot;
+        }
+        else
+        {
+            currentGun.weaponTransform.localPosition = currentGun.weaponEndMarkerTransform.localPosition;
+            currentGun.weaponTransform.localRotation = currentGun.weaponEndMarkerTransform.localRotation;
         }
     }
 

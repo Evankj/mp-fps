@@ -12,9 +12,37 @@ public class Gun : MonoBehaviour
     public IMagazineState currentMagazineState;
     public IMagazineState previousMagazineState;
 
+    public Bullet acceptedBullet;
     public Magazine currentMagazine;
     public Bullet currentBullet;
     //public AnimationClip ;
+    public bool firing = false;
+
+
+    // DEBUGGING/TESTING
+    // -------------------------------
+    public int currentBullets = 17;
+    public bool roundChambered = true;
+    // -------------------------------
+
+
+    public Transform weaponTransform;
+    public Transform weaponDefaultTransform;
+    public Transform weaponSprintTransform;
+    public Transform weaponAimTransform;
+    public Transform weaponRemoveMagazineTransform;
+    public Transform weaponInsertMagazineTransform;
+    public Transform weaponPullBoltTransform;
+    public Transform weaponStartMarkerTransform;
+    public Transform weaponEndMarkerTransform;
+
+    public float weaponAnimationDuration;
+    public float weaponAnimationTimer;
+    public float weaponADSDuration;
+    public float weaponReturnToDefaultDuration;
+    public float weaponMoveToPullDuration;
+    public float weaponMoveToInsertDuration;
+    public float weaponMoveToRemoveDuration;
 
     public Transform boltTransform;
     public Transform boltBackMarkerTransform;
@@ -31,6 +59,9 @@ public class Gun : MonoBehaviour
     public Transform magazineStartMarkerTransform;
     public Transform magazineEndMarkerTransform;
     public float magazineAnimationDuration;
+    public Transform magazineOutPosition;
+    public Transform magazineStorePosition;
+
 
     // -----------------------------------------------------------------
     // BOLT STATES
@@ -80,6 +111,12 @@ public class Gun : MonoBehaviour
 
     public GunAnimator gunAnimator;
 
+
+
+
+    public AnimationClip boltMovingToPullIKAnim;
+    public AnimationClip boltMovingToCheckIKAnim;
+
     public AnimationClip magazineRemoveToStoreIKAnim;
     public AnimationClip magazineRemoveToDropIKAnim;
     public AnimationClip magazineRemoveToCheckIKAnim;
@@ -93,6 +130,10 @@ public class Gun : MonoBehaviour
 
     public Transform defaultLeftHandIKTarget;
     public Transform defaultRightHandIKTarget;
+    public Transform currentLeftHandIKTarget;
+    public Transform currentRightHandIKTarget;
+    public Transform leftHandIKTarget;
+    public Transform rightHandIKTarget;
 
     public Transform muzzle;
     public GameObject bulletPrefab;
@@ -164,6 +205,11 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        firing = false;
+        if (Input.GetMouseButtonUp(0))
+        {
+            Fire();
+        }
         // Owner of this gun component needs to update state, observers (replicated) only need to know what state is
         if (gunNetworkingInterface.hasAuthority)
         {
@@ -172,18 +218,65 @@ public class Gun : MonoBehaviour
         }
         HandleStateChanged();
 
-        if (Input.GetMouseButtonUp(0))
+    }
+
+    public void Fire()
+    {
+        if (roundChambered) //(currentBoltState == boltClosedState && currentBullet != null)
         {
+            firing = true;
             gunNetworkingInterface.CMD_Fire(muzzle.position, muzzle.rotation);
         }
+    }
+
+    public void EjectRound()
+    {
+        // currentBullet = null;
+        roundChambered = false;
+    }
+
+    /**
+      Attempt to chamber a round from current magazine, if we can, return true, else return false
+    **/
+    public bool ChamberRound()
+    {
+        // if (currentMagazine == null)
+        //     return false;
+
+        // if (currentMagazine.bullets.Count <= 0)
+        //     return false;
+
+        if (currentBullets <= 0)
+            return false;
+
+        // currentBullet = acceptedBullet;
+        // currentMagazine.bullets.RemoveAt(0);
+
+        roundChambered = true;
+        currentBullets--;
+        return true;
     }
 
 
     void HandleIK()
     {
+        // leftHandIKTarget.transform.position = leftHand
         leftHandIKFadeInTimer -= Time.deltaTime;
+        if (leftHandIKFadeInTimer <= 0)
+        {
+            leftHandIKFadeInTimer = 0;
+        }
         rightHandIKFadeInTimer -= Time.deltaTime;
+        if (rightHandIKFadeInTimer <= 0)
+        {
+            rightHandIKFadeInTimer = 0;
+        }
 
+    }
+
+    public void SetLeftHandIKTarget(Transform target)
+    {
+        // leftHandIKTarget
     }
 
     void HandleStates()
@@ -220,6 +313,12 @@ public class Gun : MonoBehaviour
         {
             magazineStateTimer = 0;
         }
+
+        weaponAnimationTimer -= Time.deltaTime;
+        if (weaponAnimationTimer <= 0)
+        {
+            weaponAnimationTimer = 0;
+        }
     }
 
     void BoltStateChanged(IBoltState newState, IBoltState previousState)
@@ -245,6 +344,11 @@ public class Gun : MonoBehaviour
         currentBullet = bullet;
     }
 
-
+    public void PlayIKAnimation(AnimationClip clip)
+    {
+        gunIKAnimator.clip = clip;
+        magazineStateTimer = clip.length;
+        gunIKAnimator.Play();
+    }
 
 }

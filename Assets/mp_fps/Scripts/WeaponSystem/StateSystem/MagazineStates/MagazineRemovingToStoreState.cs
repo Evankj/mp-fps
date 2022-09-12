@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class MagazineRemovingToStoreState : IMagazineState
 {
-    public IMagazineState DoState(Gun gun) {
-        if (gun.magazineStateTimer <= 0) {
+    public IMagazineState DoState(Gun gun)
+    {
+        if (gun.magazineStateTimer <= 0)
+        {
             // Animation over, move to storing state
             return gun.magazineStoringState;
         }
         return this;
     }
-    public void OnEnter(Gun gun, IMagazineState previousState) {
-        gun.magazineStateTimer = gun.magazineRemoveToStoreDuration;
+
+    public void OnEnter(Gun gun, IMagazineState previousState)
+    {
+        gun.PlayIKAnimation(gun.magazineRemoveToStoreIKAnim);
     }
-    public void OnExit(Gun gun, IMagazineState nextState) {}
+    public void OnExit(Gun gun, IMagazineState nextState) { }
 }

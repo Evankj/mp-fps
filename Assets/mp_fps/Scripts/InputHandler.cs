@@ -5,7 +5,7 @@ using UnityEngine;
 public class InputHandler : MonoBehaviour
 {
     public InputClass input;
-
+    public InputClass previousInput;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,11 +16,19 @@ public class InputHandler : MonoBehaviour
     void Update()
     {
         input.UpdateInput();
+        previousInput = input;
     }
 }
 
 public class InputClass
 {
+
+    public float keyHoldTime = 0.2f;
+    float reloadHeldTimer;
+    public float keyDoubleTapTime = 0.4f;
+    float reloadDoubleTapTimer;
+
+
     public Vector2 moveVector;
     public Vector2 lookVector;
     public bool reloadDown;
@@ -44,11 +52,45 @@ public class InputClass
 
     public void UpdateInput()
     {
+
         moveVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         lookVector = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-        reloadHeld = Input.GetKey(KeyCode.R);
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            reloadDown = true;
+            reloadHeldTimer = keyHoldTime;
+
+        }
         reloadUp = Input.GetKeyUp(KeyCode.R);
+        if (reloadUp)
+        {
+            reloadDown = false;
+        }
+        reloadTapped = reloadUp && reloadHeldTimer > 0;
+        if (reloadUp)
+        {
+            reloadHeldTimer = 0;
+        }
+        reloadHeld = reloadDown && reloadHeldTimer <= 0;
         modifierHeld = Input.GetKey(KeyCode.Tab);
         boltReleaseTapped = Input.GetKeyUp(KeyCode.Q);
+
+
+        HandleTimers();
+    }
+
+    void HandleTimers()
+    {
+        reloadHeldTimer -= Time.deltaTime;
+        if (reloadHeldTimer <= 0)
+        {
+            reloadHeldTimer = 0;
+        }
+
+        reloadDoubleTapTimer -= Time.deltaTime;
+        if (reloadDoubleTapTimer <= 0)
+        {
+            reloadDoubleTapTimer = 0;
+        }
     }
 }

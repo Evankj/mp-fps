@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class MagazineRetrievingState : IMagazineState
 {
-    public IMagazineState DoState(Gun gun) {
-        if (gun.magazineStateTimer <= 0) {
+    public IMagazineState DoState(Gun gun)
+    {
+        if (gun.magazineStateTimer <= 0)
+        {
             // Animation finished, move to inserting state
             return gun.magazineInsertingState;
         }
         return this;
     }
-    public void OnEnter(Gun gun, IMagazineState previousState) {
+    public void OnEnter(Gun gun, IMagazineState previousState)
+    {
         gun.magazineStateTimer = gun.magazineRetrieveDuration;
+        gun.magazineStartMarkerTransform = gun.magazineStorePosition;
+        gun.magazineEndMarkerTransform = gun.magazineOutPosition;
     }
-    public void OnExit(Gun gun, IMagazineState nextState) {}
+    public void OnExit(Gun gun, IMagazineState nextState) { }
 }

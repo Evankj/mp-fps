@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3389383516196957458
+--- !u!1 &86708181
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,29 +8,43 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1585002145299951738}
+  - component: {fileID: 86708182}
+  - component: {fileID: 86708183}
   m_Layer: 0
-  m_Name: MagazineHolder
-  m_TagString: Untagged
+  m_Name: SuppressionZone
+  m_TagString: SuppressionZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1585002145299951738
+  m_IsActive: 0
+--- !u!4 &86708182
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3389383516196957458}
+  m_GameObject: {fileID: 86708181}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6229968717593984311}
-  m_RootOrder: 1
+  m_Father: {fileID: 986294827038626780}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &86708183
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86708181}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 8
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &3482578392893009534
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38,18 +52,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -5890333726464368533, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
-      propertyPath: magazineStateKey
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1852978347, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
-      propertyPath: magazineTransform
-      value: 
-      objectReference: {fileID: 7733603920980581174}
     - target: {fileID: 702600688739610360, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       propertyPath: m_AssetId
       value: 77fc46e3a6c304b1890d316bf0044f06
       objectReference: {fileID: 0}
+    - target: {fileID: 2155240824128031629, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+      propertyPath: acceptedBullet
+      value: 
+      objectReference: {fileID: 2056717591061864651, guid: 3abd30b51ab8f49e0902e21095a07364, type: 3}
     - target: {fileID: 4459864850019384738, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -98,38 +108,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FirstPersonController Variant
       objectReference: {fileID: 0}
-    - target: {fileID: 5096147071987434896, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
-      propertyPath: localBehaviours.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5096147071987434896, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
-      propertyPath: localBehaviours.Array.data[2]
-      value: 
-      objectReference: {fileID: 4527697572801748389}
-    - target: {fileID: 7365410588560349733, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
-      propertyPath: m_Name
-      value: Magazine
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
---- !u!114 &4527697572801748389 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1045123653477970907, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
-  m_PrefabInstance: {fileID: 3482578392893009534}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07209942b91534a9c97f967b13f2851f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &6229968717593984311 stripped
+--- !u!4 &986294827038626780 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 7359393144546956105, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
-  m_PrefabInstance: {fileID: 3482578392893009534}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7733603920980581174 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6559454728244901192, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4459864850019384738, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
   m_PrefabInstance: {fileID: 3482578392893009534}
   m_PrefabAsset: {fileID: 0}

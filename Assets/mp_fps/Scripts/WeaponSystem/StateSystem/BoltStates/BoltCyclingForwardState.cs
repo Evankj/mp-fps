@@ -28,6 +28,7 @@ public class BoltCyclingForwardState : IBoltState
         gun.boltStartMarkerTransform = gun.boltBackMarkerTransform;
         gun.boltEndMarkerTransform = gun.boltForwardMarkerTransform;
         gun.boltAnimationDuration = gun.boltCycleForwardDuration;
+
     }
     public void OnExit(Gun gun, IBoltState nextState) { }
 }
